@@ -151,13 +151,14 @@ export const buildExecuteCommand = ({ stateRef, sysState, setSysState, printLine
           state.mp -= cost;
           const mDmg = spell==='fireball' ? 8+Math.floor(state.stats.int*1.2) : 5+Math.floor(state.stats.int*0.8);
           handleCombatTurn(state, room, fe, room.enemies.indexOf(fe), mDmg, c(spell==='fireball'?'91':'94',`You cast ${spell.toUpperCase()}!`), spell==='drain'?0.5:0);
+          setGameState(state);
         } else printLine("Unknown spell.");
         break;
       }
       case 'attack': case 'kill': {
         if (!target && room.enemies?.length===1) target = room.enemies[0];
         const ae = findEntity(room.enemies||[], state.enemies, target);
-        if (ae) { const pDmg = Math.floor(state.stats.str*0.5)+(state.eq ? ITEMS[state.eq].dmg : 0); handleCombatTurn(state, room, ae, room.enemies.indexOf(ae), pDmg, 'You strike forcefully!'); }
+        if (ae) { const pDmg = Math.floor(state.stats.str*0.5)+(state.eq ? ITEMS[state.eq].dmg : 0); handleCombatTurn(state, room, ae, room.enemies.indexOf(ae), pDmg, 'You strike forcefully!'); setGameState(state); }
         else printLine("Attack what?"); break;
       }
       case 'restart':
